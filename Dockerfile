@@ -1,4 +1,8 @@
-FROM python:3.10-slim
+# Dockerfile with persistent pip cache
+# You need to add "#syntax=docker/dockerfile:1" at the top
+#syntax=docker/dockerfile:1
+
+FROM python:3.10.13-slim-bookworm
 
 WORKDIR /app
 
@@ -9,19 +13,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first (to leverage Docker cache)
 COPY requirements.txt .
 
-# Install dependencies — this layer is cached as long as requirements.txt doesn't change
-RUN pip install -v \ 
-    # --no-cache-dir \
+# This is the key change: --mount=type=cache...
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -v \
     --default-timeout=120 \
     --retries 5 \
     -r requirements.txt
 
-# Now copy the rest of your app
 COPY . .
 
 EXPOSE 8501
-
 CMD ["streamlit", "run", "src/app.py", "--server.address=0.0.0.0"]
