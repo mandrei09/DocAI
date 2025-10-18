@@ -1,0 +1,14 @@
+# Core LangChain Packages (aligned for compatibility)
+langchain==0.2.5
+langchain-community==0.2.5
+langchain-text-splitters==0.2.1
+
+# Application Framework
+streamlit==1.39.0
+
+# Document Processing & Vector DB
+pypdf==4.2.0
+chromadb==0.5.0
+
+# Embedding Model Library
+sentence-transformers==3.0.1

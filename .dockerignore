@@ -1,0 +1,56 @@
+# --- Virtual Environment ---
+# Never copy the local virtual environment into the image.
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# --- Python Caches & Compiled Files ---
+# These are generated at runtime and just add bloat.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- IDE & Editor Configuration ---
+# Your local editor settings don't belong in the image.
+.vscode/
+.idea/
+*.swp
+
+# --- Git ---
+# The entire git history is not needed in the final image.
+.git/
+.gitignore
+
+# --- Secrets / Local Environment Variables ---
+# CRITICAL: Never copy local .env files with secrets into your image.
+# Secrets should be passed in at runtime.
+.env
+*.env.*
+
+# --- Test & Coverage Reports ---
+# Test artifacts are for development, not for the production image.
+.pytest_cache/
+.coverage
+htmlcov/
+pytest-report.html
+
+# --- Build Artifacts ---
+# These are generated when packaging a library.
+dist/
+build/
+*.egg-info/
+*.egg
+
+# --- OS-specific files ---
+# Junk files from macOS and Windows.
+.DS_Store
+Thumbs.db
+
+# --- Docker files ---
+# No need to copy the Docker configuration into the image itself.
+Dockerfile
+docker-compose.yml
+.dockerignore

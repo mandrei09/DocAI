@@ -1,23 +1,27 @@
-# Foloseste o imagine de baza oficiala Python
 FROM python:3.10-slim
 
-# Seteaza directorul de lucru in container
 WORKDIR /app
 
-# Instaleaza dependintele
-RUN pip install langchain \
-    streamlit \
-    pypdf \
-    sentence-transformers \
-    chromadb \
-    langchain-community
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    nano \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copiaza restul codului sursa al aplicatiei in container
+# Copy only requirements first (to leverage Docker cache)
+COPY requirements.txt .
+
+# Install dependencies — this layer is cached as long as requirements.txt doesn't change
+RUN pip install -v \ 
+    # --no-cache-dir \
+    --default-timeout=120 \
+    --retries 5 \
+    -r requirements.txt
+
+# Now copy the rest of your app
 COPY . .
 
-# Expune portul pe care ruleaza Streamlit
 EXPOSE 8501
 
-# Comanda pentru a rula aplicatia Streamlit
-# Asigura-te ca fisierul principal al aplicatiei tale se numeste "app.py"
-CMD ["streamlit", "run", "app.py"]
+CMD ["streamlit", "run", "src/app.py", "--server.address=0.0.0.0"]

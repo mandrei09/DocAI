@@ -19,6 +19,8 @@ services:
       - ollama
     environment:
       - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      - .:/app
 
 volumes:
   ollama_data:
