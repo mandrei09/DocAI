@@ -24,7 +24,7 @@ def create_qa_chain(model_name: str, ollama_base_url: str, vector_store):
         llm=llm,
         chain_type="stuff",
         retriever=vector_store.as_retriever(
-            search_kwargs={"k": 5},
+            search_kwargs={"k": 3},
             search_type="mmr"
         ),
         return_source_documents=True,

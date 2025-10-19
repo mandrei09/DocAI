@@ -1,6 +1,7 @@
 import re
+from typing import List
 from langchain_core.documents import Document
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 def preprocess_text(document: Document) -> Document:
@@ -18,15 +19,22 @@ def preprocess_text(document: Document) -> Document:
     document.page_content = text
     return document
 
-def load_and_process_pdf(pdf_path: str):
+def load_and_process_pdf(pdf_path: str) -> List[Document]:
     """Încarcă un PDF, îl preprocesează, îl împarte în bucăți și returnează documentele."""
-    loader = PyPDFLoader(pdf_path)
+    loader = UnstructuredPDFLoader(
+        file_path=pdf_path, 
+        mode="elements"
+    )
     documents = loader.load()
-    
+        
     # Aplica preprocesarea pe fiecare document din lista
     processed_documents = [preprocess_text(doc) for doc in documents]
     
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=800, 
+        chunk_overlap=160,
+        separators=["\n\n", "\n", " ", ""]
+    )
     texts = text_splitter.split_documents(processed_documents)
     
     return texts

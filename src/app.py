@@ -40,8 +40,7 @@ if uploaded_file:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
                     tmp_file.write(uploaded_file.getbuffer())
                     pdf_path = tmp_file.name
-
-                # PASUL 1: Incarca, preproceseaza si imparte documentul
+                
                 texts = load_and_process_pdf(pdf_path)
 
                 # PASUL 2: Defineste si creeaza embeddings
