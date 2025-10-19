@@ -25,4 +25,5 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY . .
 
 EXPOSE 8501
-CMD ["streamlit", "run", "src/app.py", "--server.address=0.0.0.0"]
+# CMD ["streamlit", "run", "src/app.py", "--server.address=0.0.0.0"]
+CMD ["tail", "-f", "/dev/null"]
